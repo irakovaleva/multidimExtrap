@@ -11,7 +11,7 @@ namespace Approx
         public double[] data; // add generic type instead of double.
         public Object label;
 
-        public LabeledData(double[] data, int label)
+        public LabeledData(double[] data, Object label)
         {
             this.data = data;
             this.label = label;

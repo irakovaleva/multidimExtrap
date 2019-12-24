@@ -19,8 +19,8 @@ namespace Approx
         const string LN_XY3 = "LnXY3";
         const string SQRT_X_SQRT_Y = "SqrtXSqrtY";
 
-        public static string configFile = @"d:\Study\Archive\project\config1.cfg";
-        public static string pointFile = @"d:\Study\Archive\project\points1.txt";
+        public static string configFile = "";
+        public static string pointFile = "";
         public static string[] learnFunctions;
         public static string testFunction;
 
@@ -28,10 +28,10 @@ namespace Approx
         {
             learnFunctions = new string[] { LG_FUNC };
             testFunction = LG_FUNC;
-            //Console.WriteLine("Please write path to config file:");
-            //configFile = Console.ReadLine();
-            //Console.WriteLine("Please write path to points file:");
-            //pointFile = Console.ReadLine();
+            Console.WriteLine("Please write path to config file:");
+            configFile = Console.ReadLine();
+            Console.WriteLine("Please write path to points file:");
+            pointFile = Console.ReadLine();
             Console.WriteLine(testFunction + " Test START");
 
             IParser parser = new Parser();
@@ -70,8 +70,8 @@ namespace Approx
                 i++;
             }
 
-            solver.testResult(Solver.func);
-            Console.WriteLine(testFunction + " Test END in " + i + " iterations");
+            solver.testResult(task.N, task.M, Solver.func);
+            Console.WriteLine(testFunction + "Get " + task.points.Length + " points");
             Console.ReadKey();
         }
     }

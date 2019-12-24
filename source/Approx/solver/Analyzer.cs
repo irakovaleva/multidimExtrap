@@ -177,7 +177,6 @@ namespace Approx
                 }
                 // current val
                 double[] cuurentNode = (double[])grid.Node[i].Clone();
-                // double[] cuurentNode = (double[])grid.Node[i].Clone();
                 this.func.Calculate(cuurentNode);
                 double cuurentNodeVal = cuurentNode[cuurentNode.Length - 1];
                 if (cuurentNodeVal < minNeighbours)
@@ -219,66 +218,9 @@ namespace Approx
                 }
             }
             candidates = newCandidates.ToArray();
-            double z;
-            cls.validate<int>(ldata1, out z);
-            Console.WriteLine("Z " + z);
 
             xfcandidates = Tools.Sub(grid.Node, candidates);
         }
-
-        private double[] build_fetures_from_existing_points(int i, Func<double[], double[]> calcDerivative)
-        {
-            // min, max in locality
-            int index;
-            grid.ToIndex(xf[i], out index);
-            double maxNeighbours = double.MinValue;
-            double minNeighbours = double.MaxValue;
-            foreach (var neighbour in grid.Neighbours(index))
-            {
-                double[] calcNeighbour = (double[])grid.Node[neighbour].Clone();
-                this.func.Calculate(calcNeighbour);
-                if (calcNeighbour[calcNeighbour.Length - 1] < minNeighbours)
-                {
-                    minNeighbours = calcNeighbour[calcNeighbour.Length - 1];
-                }
-                if (calcNeighbour[calcNeighbour.Length - 1] > maxNeighbours)
-                {
-                    maxNeighbours = calcNeighbour[calcNeighbour.Length - 1];
-                }
-            }
-            double[] nearestNeighbour = (double[])grid.Node[index].Clone();
-            this.func.Calculate(nearestNeighbour);
-            if (nearestNeighbour[nearestNeighbour.Length - 1] < minNeighbours)
-            {
-                minNeighbours = nearestNeighbour[nearestNeighbour.Length - 1];
-            }
-            if (nearestNeighbour[nearestNeighbour.Length - 1] > maxNeighbours)
-            {
-                maxNeighbours = nearestNeighbour[nearestNeighbour.Length - 1];
-            }
-
-            // current val
-            double[] cuurentNode = (double[])xf[i].Clone();
-            this.func.Calculate(cuurentNode);
-            double cuurentNodeVal = cuurentNode[cuurentNode.Length - 1];
-
-            //derivative 
-            double[] derivative = calcDerivative(xf[i]);
-
-            // build features vector
-            double[] features = new double[5 + derivative.Length];
-            features[0] = borderdist[index];
-            features[1] = 0;
-            features[2] = maxNeighbours;
-            features[3] = minNeighbours;
-            features[4] = cuurentNodeVal;
-            for (int k = 0; k < derivative.Length; k++)
-            {
-                features[5 + k] = derivative[k];
-            }
-            return features;
-        }
-
         
         public Analyzer(IFunction func, double[][] xf, int[] count)
         {
@@ -318,7 +260,7 @@ namespace Approx
                 //Console.WriteLine("index " + index + "domain " + domain[index] + " dist " + dist[index] );
                 queue.Enqueue(index);
             }
-            Console.WriteLine("queue " + Analyzer.counter);
+            //Console.WriteLine("queue " + Analyzer.counter);
             Analyzer.counter++;
             while (queue.Count > 0)
             {
